@@ -1,5 +1,6 @@
 package com.example.helloandroid;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -15,7 +16,7 @@ import android.util.Log;
  * @author szy
  *
  */
-public class HelloActivity extends ActionBarActivity {
+public class HelloActivity extends Activity {
 	 private Button btnLogin;
 	 private EditText account=null;
 	 private EditText pass=null;

@@ -6,5 +6,6 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry kind="lib" path="/home/s/git/androidGit/HelloAndroid/libs/android-support-v4.jar"/>
+	<classpathentry kind="lib" path="/home/s/桌面/adt-bundle-linux-x86_64-20140702/sdk/platforms/android-23/android.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
