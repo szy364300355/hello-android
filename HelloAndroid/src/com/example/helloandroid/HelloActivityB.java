@@ -22,12 +22,13 @@ public class HelloActivityB extends Activity  {
 		 super.onCreate(savedInstanceState);
 	        setContentView(R.layout.activity_hello);  
 	        Log.i("INFO","B on create");
-	        onResume(savedInstanceState);
+//	        onResume(savedInstanceState);
 	        btnBack=(Button)this.findViewById(R.id.btnBack);
 	        btnBack.setOnClickListener(new MyBackListener());
 //	        TextView tv=new TextView(this);
 //	        tv.setText("Hello World!");
 //	        setContentView(tv);
+	        
  
 	 }
 		private class MyBackListener implements OnClickListener{
@@ -38,8 +39,9 @@ public class HelloActivityB extends Activity  {
 			}
 			
 		}
-		
-	    protected void onResume(Bundle savedInstanceState){
+		@Override
+	    protected void onResume(){
+			super.onResume();
 	    	Intent intent=getIntent();
 	    	inputFromAccount=(EditText) this.findViewById(R.id.inputAccount);
 	        String input="Hi "+intent.getExtras().getString("account")+" : ";

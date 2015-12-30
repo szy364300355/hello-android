@@ -35,11 +35,14 @@ public class HelloActivity extends Activity {
         pass=(EditText)this.findViewById(R.id.editBoxPassword);
         Log.i("INFO","A on create");
     }
-    protected void onResume(Bundle savedInstanceState){
+    
+    @Override
+    protected void onResume(){
+    	super.onResume();
     	Log.i("INFO","A on resume");
+    	account.setText(null);
+    	
     }
-    
-    
 /**
  * 为登录按钮添加监听器
  */
