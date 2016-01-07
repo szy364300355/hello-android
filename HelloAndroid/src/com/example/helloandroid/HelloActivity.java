@@ -1,5 +1,7 @@
 package com.example.helloandroid;
 
+import com.example.helloandroid.database.UserDao;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,27 +23,47 @@ public class HelloActivity extends Activity {
 	 private EditText account=null;
 	 private EditText pass=null;
 	 private Button btnFinish;
-	 
+	 private Button btnSign;
+	 public static UserDao userDao;
+	 int cont=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.username_pass);      
-
+        
         btnLogin=(Button)this.findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(new MyListener());
         btnFinish=(Button)this.findViewById(R.id.btnFinish);
         btnFinish.setOnClickListener(new MyListener());
+        btnSign=(Button)this.findViewById(R.id.btnSign);
+        btnSign.setOnClickListener(new MyListener());
         account=(EditText)this.findViewById(R.id.editBoxAccount);
         pass=(EditText)this.findViewById(R.id.editBoxPassword);
-        Log.i("INFO","A on create");
+        
+//初始化数据库 清空里面所有数据
+        userDao=new UserDao(getBaseContext());
+//        userDao.createAll();
+        init();
+        for(int i=0;i<16;i++)
+        { 
+        userDao.insertData(1+"", "test brief"+cont, "test content"+cont);
+		 cont++;
+		 }
     }
-    
+    /**
+     * 初始化数据库
+     */
+    public void init(){
+    	userDao.delectAll("userdata");
+        userDao.delectAll("user");
+        userDao.insertUser("test", "test");
+		 account.setText("test");
+		 pass.setText("test");
+    }
     @Override
     protected void onResume(){
     	super.onResume();
-    	Log.i("INFO","A on resume");
-    	account.setText(null);
-    	
+
     }
 /**
  * 为登录按钮添加监听器
@@ -54,13 +76,30 @@ private class MyListener implements OnClickListener{
 			 Bundle bundle=new Bundle(); 
 			 bundle.putString("account", account.getText().toString());
 			 bundle.putString("pass", pass.getText().toString());
+//校验用户名密码
+			 if(!userDao.checkUserAndPass(account.getText().toString(), pass.getText().toString()))
+				 return;
+			 
+			 
+			 //TODO TEST
+			 String id=String.valueOf(userDao.getRowId(account.getText().toString()));
+			 Log.v("HelloActivity", "get userid " + id );
+			 bundle.putString("id", id);
+
+			 
 		    Intent intent = new Intent(); 
-	        intent.setClass(HelloActivity.this, HelloActivityB.class);
+	        intent.setClass(HelloActivity.this, BriefActivity.class);
 	        intent.putExtras(bundle);
 	        HelloActivity.this.startActivity(intent);
 		}
 		if(v==btnFinish){
 			finish();
+		}
+		if(v==btnSign){
+			//跳转到注册页面
+			 Intent intent = new Intent(); 
+		     intent.setClass(HelloActivity.this, HelloActivitySign.class);
+		     startActivityForResult(intent,1);
 		}
 
 	}	

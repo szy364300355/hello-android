@@ -22,12 +22,8 @@ public class HelloActivityB extends Activity  {
 		 super.onCreate(savedInstanceState);
 	        setContentView(R.layout.activity_hello);  
 	        Log.i("INFO","B on create");
-//	        onResume(savedInstanceState);
 	        btnBack=(Button)this.findViewById(R.id.btnBack);
 	        btnBack.setOnClickListener(new MyBackListener());
-//	        TextView tv=new TextView(this);
-//	        tv.setText("Hello World!");
-//	        setContentView(tv);
 	        
  
 	 }
@@ -49,8 +45,24 @@ public class HelloActivityB extends Activity  {
 	        inputFromPass=(EditText) this.findViewById(R.id.inputPass);
 	        input="Your password is   :  "+intent.getExtras().getString("pass");
 	        inputFromPass.setText(input);
+//	        this.onDestroy()
 	    }
-	    
+		@Override
+		protected void onPause(){
+			super.onPause();
+			Log.i("INFO","B on pause");
+		}
+		@Override
+		protected void onStop(){
+			super.onStop();
+	        Log.i("INFO","B on stop");
+		}
+		@Override
+		protected void onDestroy(){
+			super.onDestroy();
+			 Log.i("INFO","B on destroy");
+		}
+		
 	    @Override
 	    public boolean onCreateOptionsMenu(Menu menu) {
 	        // Inflate the menu; this adds items to the action bar if it is present.

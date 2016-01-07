@@ -25,6 +25,22 @@
             android:name=".HelloActivityB"
             android:label="@string/app_name" >
         </activity>
+               <activity
+            android:name=".HelloActivitySign"
+            android:label="@string/app_name" >
+        </activity>
+          <activity
+            android:name=".BriefActivity"
+            android:label="@string/app_name" >
+        </activity>
+         <activity
+            android:name=".EditActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".AddActivity"
+            android:label="@string/app_name" >
+        </activity>
     </application>
 
 </manifest>

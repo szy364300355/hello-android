@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg"
+    android:theme="@android:style/Theme"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+>
+	<RelativeLayout 
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	>
+	       <TableLayout 
+	android:id="@+id/signup_page_table"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:stretchColumns="1,2,3"
+    >
+    <TableRow     android:layout_width="fill_parent" 
+        android:layout_height="wrap_content"> 
+                      
+        <TextView android:text="@string/signup_title"
+        android:layout_width="fill_parent"	
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_column="0"
+        android:layout_span="4"
+        android:paddingBottom="15dp"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
+                    
+        </TableRow>
+                 
+<TableRow android:layout_width="fill_parent" 
+        android:layout_height="wrap_content"> 
+    <TextView android:text="@string/hello_world"
+        android:layout_width="fill_parent"	android:layout_height="wrap_content"
+    android:layout_marginRight="0dp"
+    android:layout_marginLeft="0dp"
+    android:layout_weight="0"
+/>
+    
+    <EditText android:layout_width="fill_parent"
+	android:id="@+id/editBoxSignUserName"
+	android:layout_height="wrap_content"
+	android:inputType="text"
+	android:maxLength="20"
+	android:singleLine="true"
+	android:layout_marginRight="0dp"
+    android:layout_marginLeft="0dp"
+    android:layout_column="1"
+    android:layout_span="3"
+	android:layout_weight="1"/></TableRow>
+   
+<TableRow android:layout_width="fill_parent" 
+        android:layout_height="wrap_content"> 
+        
+    <TextView android:text="@string/password"
+        android:layout_width="wrap_content"	android:layout_height="wrap_content"
+        android:layout_marginRight="0dp"
+   		android:layout_marginLeft="0dp"
+        android:layout_weight="0"
+       />
+    
+    <EditText android:layout_width="fill_parent"
+	android:id="@+id/editBoxSignPass"
+	android:layout_height="wrap_content"
+	android:layout_marginRight="0dp"
+    android:layout_marginLeft="0dp"
+    android:inputType="textPassword"
+	android:maxLength="20"
+	android:singleLine="true"
+	android:layout_span="3"
+	android:layout_weight="1"/>
+</TableRow>
+<TableRow android:layout_width="fill_parent" 
+        android:layout_height="wrap_content"> 
+    <TextView android:text="@string/repeat_pass"
+        android:layout_width="wrap_content"	android:layout_height="wrap_content"
+        android:layout_marginRight="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_weight="0"
+       />
+    
+    <EditText android:layout_width="fill_parent"
+	android:id="@+id/editBoxRepeatPass"
+	android:layout_height="wrap_content"
+    android:inputType="textPassword"
+	android:layout_marginRight="0dp"
+    android:layout_marginLeft="0dp"
+	android:maxLength="20"
+	android:singleLine="true"
+	android:layout_span="3"
+	android:layout_weight="1"/>
+</TableRow>
+
+</TableLayout>
+ <LinearLayout
+android:layout_below="@id/signup_page_table"
+android:layout_marginLeft="25dp"
+android:layout_marginRight="25dp"
+android:orientation="horizontal"
+android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+android:layout_marginTop="25dp"
+>	
+    
+ <Button android:text="@string/next"
+android:id="@+id/btnSignup" 
+style="@style/ButtonText"
+android:layout_height="wrap_content"
+android:layout_width="fill_parent"
+android:textSize="5pt" 
+android:layout_weight="1"
+android:layout_marginRight="25dp"
+></Button>
+<Button android:text="@string/back"
+android:id="@+id/btnSignback" 
+style="@style/ButtonText"
+android:layout_height="wrap_content"
+android:layout_width="fill_parent"
+android:textSize="5pt" 
+android:layout_weight="1"
+android:layout_marginLeft="25dp"
+></Button>
+　　   </LinearLayout>
+	</RelativeLayout>
+
+ </LinearLayout>	
+ 
+
+
+
+    

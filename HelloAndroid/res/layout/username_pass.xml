@@ -41,7 +41,7 @@ android:layout_width="fill_parent"
 android:id="@+id/editBoxAccount"
 android:layout_height="wrap_content"
 android:inputType="text"
-android:maxLength="12"
+android:maxLength="20"
 android:singleLine="true"></EditText>
      
 　　    </LinearLayout>
@@ -88,15 +88,25 @@ android:layout_weight="0.3"
 style="@style/ButtonText"
 android:layout_height="wrap_content"></Button>
 　　   
-
+　　   <Button android:text="@string/sign"
+ android:textSize="5pt"  
+android:layout_width="0dp"
+android:layout_marginLeft="25dp"
+android:id="@+id/btnSign" 
+android:layout_weight="0.3"
+style="@style/ButtonText"
+android:layout_height="wrap_content"></Button>
+　　   
 　　   <Button android:text="@string/finish"
  android:textSize="5pt"  
 android:layout_width="0dp"
-android:layout_marginLeft="50dp"
+android:layout_marginLeft="25dp"
 android:id="@+id/btnFinish" 
 android:layout_weight="0.3"
 style="@style/ButtonText"
 android:layout_height="wrap_content"></Button>
+　　   
+
   
 　　    </LinearLayout>
 　　</LinearLayout>
