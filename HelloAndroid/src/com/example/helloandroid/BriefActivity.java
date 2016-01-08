@@ -46,7 +46,7 @@ public class BriefActivity extends Activity{
 	private Context context;
 	private List<String> position;//=new ArrayList<String>();
 	private boolean isMulChoice=false;//多选
-	private Adapter adapter;
+	public Adapter adapter;
 	private LinearLayout layout;
 	private TextView txtcount;
 	public Cursor c;
@@ -85,7 +85,7 @@ public class BriefActivity extends Activity{
     protected void onResume(){
     	super.onResume();
     	c=HelloActivity.userDao.getUserData(userid);
-		Adapter adapter=new Adapter(this,c);
+		adapter=new Adapter(this,c);
 //    	c=HelloActivity.userDao.getUserData(userid);
 //		Adapter adapter=new Adapter(this,c);
 //
@@ -101,8 +101,8 @@ public class BriefActivity extends Activity{
 				 
 				 //跳转查看/编辑页面
 				 Bundle bundle=new Bundle(); 
-				 bundle.putString("position", String.valueOf(arg2));
-				 
+				 Adapter adapter=BriefActivity.this.adapter;
+				 bundle.putString("rowid", adapter.getRowid(arg2));				 
 				 bundle.putString("id",getIntent().getExtras().getString("id"));
 				 Intent intent = new Intent(); 
 				 intent.putExtras(bundle);
@@ -205,6 +205,10 @@ public class BriefActivity extends Activity{
 				ischeck.put(i, false);
 				visiblecheck.put(i, -1);
 			}
+		}
+		public String getRowid(int position){
+			c.moveToPosition(position);
+			return cursor.getString(cursor.getColumnIndex("rowid"));
 		}
 		@Override
 		public int getCount() {

@@ -136,16 +136,43 @@ public class UserDao {
 			return c;
 			
 	}
-	public EditActivity.Item getContent(String id,String position){
+	public void saveData(String id,String rowid,EditActivity.Item item){
+		String sql="UPDATE userdata SET id =?, content = ?, brief =?,date=? WHERE rowid=?;";
+		try{
+			openToWrite();
+			
+			String brief;
+			if(item.content.length()>20){
+				brief=item.content.substring(0, 19);			
+			}else{
+				brief=item.content;
+			}
+			db.execSQL(sql, new Object[]{id,item.content,brief,item.date,rowid});
+		}catch(SQLException e){
+		}finally{
+			close();
+		}
+	}
+	/**
+	 * 根据rowid获取 用户备忘录内容
+	 * @param rowid
+	 * @return
+	 */
+	public EditActivity.Item getContent(String rowid){
 		try{
 			EditActivity.Item item=new EditActivity.Item();
-			int po=Integer.valueOf(position);
+			int po=Integer.valueOf(rowid);
 			openToRead();
-			String sql="select * from userdata where id=? order by time desc";
-			Cursor c=db.rawQuery(sql,new String[]{id});
-			c.moveToPosition(po);
-			item.content=c.getString(c.getColumnIndex(UserDao.USERDATA_CONTENT));
-			item.date=c.getString(c.getColumnIndex(UserDao.USERDATA_DATE));
+			String sql="select *,rowid from userdata where rowid=? order by time desc";
+			Cursor c=db.rawQuery(sql,new String[]{rowid});
+			if(c.moveToNext())
+			{
+				item.content=c.getString(c.getColumnIndex(UserDao.USERDATA_CONTENT));
+				item.date=c.getString(c.getColumnIndex(UserDao.USERDATA_DATE));
+			}else{
+				item.content="";
+				item.date="";
+			}
 			c.close();
 			return item;
 		}catch(SQLException e){

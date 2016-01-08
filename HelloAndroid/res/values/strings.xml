@@ -13,8 +13,9 @@
     <string name="sign">REGIST</string>
     <string name="signup_title">REGISTER</string>
     <string name="next">NEXT</string>
-    <string name="edit">ADD</string>
+    <string name="edit">EDIT</string>
     <string name="delete">DELETE</string>
     <string name="save">SAVE</string>
       <string name="cancel">CANCEL</string>
+            <string name="add">ADD</string>
 </resources>
