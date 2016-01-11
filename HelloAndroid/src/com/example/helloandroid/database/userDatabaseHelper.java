@@ -29,7 +29,7 @@ public class userDatabaseHelper extends SQLiteOpenHelper{
 		String sql="CREATE TABLE user ("+
 				"`username` varchar( 20 ) NOT NULL ,`password` varchar( 20 ) NOT NULL);";
 		String sql2="CREATE TABLE userdata(`id` int( 11 ) NOT NULL ," +
-				"`brief` text NOT NULL ,`content` text NOT NULL ," +
+				"`brief` text NOT NULL ,`content` text DEFAULT '',`title` text NOT NULL ," +
 				"`time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ," +
 				"`date` varchar( 20 ) NOT NULL) ";
 		

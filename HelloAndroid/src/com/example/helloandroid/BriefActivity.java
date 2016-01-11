@@ -6,8 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import com.example.helloandroid.database.UserDao;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -56,8 +58,6 @@ public class BriefActivity extends Activity{
 		super.onCreate(savedInstanceState);
 		this.savedInstanceState=savedInstanceState;
 		userid=getIntent().getExtras().getString("id");
-//		rowid=savedInstanceState.getLong("rowid");
-//		String[] cols=new String[]{"brief","date"};
 		setContentView(R.layout.brief_layout); 
 		
 		context=this;
@@ -157,22 +157,36 @@ public class BriefActivity extends Activity{
 					return;
 			}
 			if(v==btnDelete){
-				Adapter adapter=(Adapter) listview.getAdapter();
+				final Adapter adapter=(Adapter) listview.getAdapter();
 				if(adapter.selectCount==0)
 					return;
-				position=new ArrayList<String>();
-				HashMap<Integer,Boolean> checkBox=adapter.ischeck;
-				for(int i=0;i<checkBox.size();i++)
-					if(checkBox.get(i))
-						{
-						position.add(String.valueOf(adapter.visiblecheck.get(i)));
-						}
-				HelloActivity.userDao.delectItems(position,BriefActivity.this.c);
-				visflag=false;
-				((BaseAdapter) listview.getAdapter()).notifyDataSetInvalidated();
-				onResume();
-				findViewById(R.id.briefFront).setVisibility(View.VISIBLE);
-				findViewById(R.id.briefHideLayout).setVisibility(View.GONE);
+				new AlertDialog.Builder(BriefActivity.this).setTitle("提示").setMessage("确认删除当前选择的"+adapter.selectCount+"项么？")
+				.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						position=new ArrayList<String>();
+						HashMap<Integer,Boolean> checkBox=adapter.ischeck;
+						for(int i=0;i<checkBox.size();i++)
+							if(checkBox.get(i))
+								{
+								position.add(String.valueOf(adapter.visiblecheck.get(i)));
+								}
+						HelloActivity.userDao.delectItems(position,BriefActivity.this.c);
+						visflag=false;
+						((BaseAdapter) listview.getAdapter()).notifyDataSetInvalidated();
+						onResume();
+						findViewById(R.id.briefFront).setVisibility(View.VISIBLE);
+						findViewById(R.id.briefHideLayout).setVisibility(View.GONE);
+						
+					}
+				}).setNegativeButton("返回", new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+					}
+				}).show();
+
 			}
 		}
 	}
@@ -239,7 +253,7 @@ public class BriefActivity extends Activity{
 						    null);
 				 holder = new ViewHolder();
                  /*得到各个控件的对象*/                    
-
+				 holder.title= (TextView) convertView.findViewById(R.id.itemTitle);
 				 holder.brief = (TextView) convertView.findViewById(R.id.itemBrief);
                  holder.date = (TextView) convertView.findViewById(R.id.itemDate);
                  holder.bt = (CheckBox) convertView.findViewById(R.id.itemCheck);
@@ -277,7 +291,7 @@ public class BriefActivity extends Activity{
 				
 			}
             if(cursor.moveToPosition(position)){
-				
+				holder.title.setText(cursor.getString(cursor.getColumnIndex(UserDao.USERDATA_TITLE)));
 				holder.brief.setText(cursor.getString(cursor.getColumnIndex(UserDao.USERDATA_BREIF)));
 				holder.date.setText(cursor.getString(cursor.getColumnIndex(UserDao.USERDATA_DATE)));
 			}
@@ -285,6 +299,7 @@ public class BriefActivity extends Activity{
 		}
 		/**存放控件*/ 
 		public final class ViewHolder{
+			public TextView title;
 		    public TextView brief;
 		    public TextView date;
 		    public CheckBox   bt;

@@ -1,24 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
 >
-    <TextView
+<RelativeLayout 
+    android:layout_weight="1"
+    android:layout_width="0dp"
+    android:layout_height="fill_parent"
+>
+
+       
+        <TextView
+        android:layout_gravity="left"
+        android:gravity="left"
+        android:id="@+id/itemTitle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+         android:singleLine="true"
+        ></TextView>
+
+
+        <TextView
+        android:layout_below="@id/itemTitle"
         android:id="@+id/itemBrief"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
+        android:singleLine="true"
         ></TextView>
-        <TextView
+    </RelativeLayout>
+    
+            <TextView
         android:id="@+id/itemDate"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/itemBrief"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
         ></TextView>
     <CheckBox android:id="@+id/itemCheck"
-        android:layout_alignParentRight="true"
+        android:gravity="right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
 />
-        </RelativeLayout>
+        </LinearLayout>

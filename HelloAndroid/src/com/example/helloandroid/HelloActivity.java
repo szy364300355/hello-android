@@ -5,12 +5,14 @@ import com.example.helloandroid.database.UserDao;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 /**
@@ -46,7 +48,7 @@ public class HelloActivity extends Activity {
         init();
         for(int i=0;i<16;i++)
         { 
-        userDao.insertData(1+"", "test brief"+cont, "test content"+cont);
+        userDao.insertData(1+"", "test brief"+cont, "test brief"+cont,"test title"+cont);
 		 cont++;
 		 }
     }
@@ -73,15 +75,29 @@ private class MyListener implements OnClickListener{
 	@Override
 	public void onClick(View v) {
 		if(v==btnLogin){
+			//用户名或者密码为空
+			if(account.getText().toString().trim().equals("")||pass.getText().toString().trim().equals(""))
+			{
+				Toast toast = Toast.makeText(getApplicationContext(), "用户名或密码不能为空", Toast.LENGTH_LONG);
+				 toast.setGravity(Gravity.CENTER, 0, 0);
+				 toast.show();
+				 return;
+			}
+			
+			//校验用户名密码
+			 if(!userDao.checkUserAndPass(account.getText().toString(), pass.getText().toString()))
+			 {
+				 Toast toast = Toast.makeText(getApplicationContext(), "用户名或密码错误", Toast.LENGTH_LONG);
+				 toast.setGravity(Gravity.CENTER, 0, 0);
+				 toast.show();
+				 return;
+			 }
+			 
 			 Bundle bundle=new Bundle(); 
 			 bundle.putString("account", account.getText().toString());
 			 bundle.putString("pass", pass.getText().toString());
-//校验用户名密码
-			 if(!userDao.checkUserAndPass(account.getText().toString(), pass.getText().toString()))
-				 return;
 			 
-			 
-			 //TODO TEST
+			 //获取用户id
 			 String id=String.valueOf(userDao.getRowId(account.getText().toString()));
 			 Log.v("HelloActivity", "get userid " + id );
 			 bundle.putString("id", id);

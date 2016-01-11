@@ -22,7 +22,7 @@ public class UserDao {
 	public static final String USERDATA_BREIF="brief";
 	public static final String USERDATA_CONTENT="content";
 	public static final String USERDATA_DATE="date";
-	
+	public static final String USERDATA_TITLE="title";
 	public UserDao(Context cxt){
 		this.context=cxt;
 		helper=new userDatabaseHelper(cxt);
@@ -84,14 +84,18 @@ public class UserDao {
 			close();
 		}
 	}
-	public void insertData(String id,String brief,String content){
+	public void insertData(String id,String brief,String content,String title){
 		try{
+			
+			String cont="";
+			if(content!=null)
+				cont=content;
 			Date dt=new Date(); 
 			SimpleDateFormat matter=new SimpleDateFormat("yyyy/MM/dd");
 			String date=matter.format(dt);
-			String sql="insert into userdata (id,brief,content,date) values(?,?,?,?)";
+			String sql="insert into userdata (id,brief,content,title,date) values(?,?,?,?,?)";
 			openToWrite();
-			db.execSQL(sql, new Object[]{id,brief,content,date});
+			db.execSQL(sql, new Object[]{id,brief,cont,title,date});
 			Log.i("INFO","insertData : 	"+id+" : "+brief);
 		}catch(SQLException e){
 			
@@ -137,17 +141,17 @@ public class UserDao {
 			
 	}
 	public void saveData(String id,String rowid,EditActivity.Item item){
-		String sql="UPDATE userdata SET id =?, content = ?, brief =?,date=? WHERE rowid=?;";
+		String sql="UPDATE userdata SET id =?, content = ?, brief =?,title=?,date=? WHERE rowid=?;";
 		try{
 			openToWrite();
 			
 			String brief;
-			if(item.content.length()>20){
-				brief=item.content.substring(0, 19);			
+			if(item.content.length()>40){
+				brief=item.content.substring(0,39);			
 			}else{
 				brief=item.content;
 			}
-			db.execSQL(sql, new Object[]{id,item.content,brief,item.date,rowid});
+			db.execSQL(sql, new Object[]{id,item.content,brief,item.title,item.date,rowid});
 		}catch(SQLException e){
 		}finally{
 			close();
@@ -169,9 +173,11 @@ public class UserDao {
 			{
 				item.content=c.getString(c.getColumnIndex(UserDao.USERDATA_CONTENT));
 				item.date=c.getString(c.getColumnIndex(UserDao.USERDATA_DATE));
+				item.title=c.getString(c.getColumnIndex(UserDao.USERDATA_TITLE));
 			}else{
 				item.content="";
 				item.date="";
+				item.title="";
 			}
 			c.close();
 			return item;
@@ -222,6 +228,5 @@ public class UserDao {
 		}finally{
 			close();
 		}
-		
 	}
-}
+	}

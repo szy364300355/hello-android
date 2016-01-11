@@ -16,6 +16,8 @@
     <string name="edit">EDIT</string>
     <string name="delete">DELETE</string>
     <string name="save">SAVE</string>
-      <string name="cancel">CANCEL</string>
-            <string name="add">ADD</string>
+    <string name="cancel">CANCEL</string>
+    <string name="add">ADD</string>
+    <string name="title">INPUT YOUR TITLE</string>
+    <string name="content">CONTENT HERE</string>
 </resources>

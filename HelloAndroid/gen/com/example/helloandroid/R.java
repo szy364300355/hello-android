@@ -27,46 +27,51 @@ public final class R {
         public static final int ic_launcher=0x7f020002;
     }
     public static final class id {
-        public static final int LinearLayout01=0x7f08001c;
-        public static final int LinearLayout02=0x7f08001d;
-        public static final int LinearLayout03=0x7f08001e;
-        public static final int LinearLayout_account=0x7f08001f;
-        public static final int action_settings=0x7f080027;
-        public static final int addDateText=0x7f080003;
-        public static final int briefFront=0x7f080008;
-        public static final int briefHideLayout=0x7f08000b;
+        public static final int LinearLayout01=0x7f080021;
+        public static final int LinearLayout02=0x7f080022;
+        public static final int LinearLayout03=0x7f080023;
+        public static final int LinearLayout_account=0x7f080024;
+        public static final int action_settings=0x7f08002c;
+        public static final int addDateText=0x7f080009;
+        public static final int addTitle=0x7f080006;
+        public static final int briefFront=0x7f080003;
+        public static final int briefHideLayout=0x7f08000c;
         public static final int btnAddBack=0x7f080004;
         public static final int btnAddSave=0x7f080005;
         public static final int btnBack=0x7f080002;
-        public static final int btnBriefAdd=0x7f08000a;
-        public static final int btnBriefBack=0x7f080009;
-        public static final int btnBriefDelete=0x7f08000d;
-        public static final int btnBriefRepeal=0x7f08000c;
-        public static final int btnEditAdd=0x7f080010;
-        public static final int btnEditBack=0x7f08000f;
-        public static final int btnEditSave=0x7f080011;
-        public static final int btnFinish=0x7f080026;
-        public static final int btnLogin=0x7f080024;
-        public static final int btnSign=0x7f080025;
-        public static final int btnSignback=0x7f08001b;
-        public static final int btnSignup=0x7f08001a;
-        public static final int contentAddView=0x7f080007;
-        public static final int contentEditView01=0x7f080012;
-        public static final int editBoxAccount=0x7f080021;
-        public static final int editBoxPassword=0x7f080023;
-        public static final int editBoxRepeatPass=0x7f080019;
-        public static final int editBoxSignPass=0x7f080018;
-        public static final int editBoxSignUserName=0x7f080017;
-        public static final int editDateText=0x7f08000e;
-        public static final int editLayout=0x7f080006;
+        public static final int btnBriefAdd=0x7f08000b;
+        public static final int btnBriefBack=0x7f08000a;
+        public static final int btnBriefDelete=0x7f08000e;
+        public static final int btnBriefRepeal=0x7f08000d;
+        public static final int btnEditAdd=0x7f080011;
+        public static final int btnEditBack=0x7f080010;
+        public static final int btnEditBack2=0x7f080013;
+        public static final int btnEditSave=0x7f080014;
+        public static final int btnFinish=0x7f08002b;
+        public static final int btnLogin=0x7f080029;
+        public static final int btnSign=0x7f08002a;
+        public static final int btnSignback=0x7f080020;
+        public static final int btnSignup=0x7f08001f;
+        public static final int contentAddView=0x7f080008;
+        public static final int contentEditView01=0x7f080015;
+        public static final int editBoxAccount=0x7f080026;
+        public static final int editBoxPassword=0x7f080028;
+        public static final int editBoxRepeatPass=0x7f08001e;
+        public static final int editBoxSignPass=0x7f08001d;
+        public static final int editBoxSignUserName=0x7f08001c;
+        public static final int editDateText=0x7f080016;
+        public static final int editFront=0x7f08000f;
+        public static final int editGone=0x7f080012;
+        public static final int editLayout=0x7f080007;
         public static final int inputAccount=0x7f080000;
         public static final int inputPass=0x7f080001;
-        public static final int itemBrief=0x7f080013;
-        public static final int itemCheck=0x7f080015;
-        public static final int itemDate=0x7f080014;
-        public static final int lblAccount=0x7f080020;
-        public static final int lblPassword=0x7f080022;
-        public static final int signup_page_table=0x7f080016;
+        public static final int itemBrief=0x7f080018;
+        public static final int itemCheck=0x7f08001a;
+        public static final int itemDate=0x7f080019;
+        public static final int itemTitle=0x7f080017;
+        public static final int lblAccount=0x7f080025;
+        public static final int lblPassword=0x7f080027;
+        public static final int signup_page_table=0x7f08001b;
     }
     public static final class layout {
         public static final int activity_hello=0x7f030000;
@@ -87,6 +92,7 @@ public final class R {
         public static final int app_name=0x7f050000;
         public static final int back=0x7f050007;
         public static final int cancel=0x7f05000f;
+        public static final int content=0x7f050012;
         public static final int delete=0x7f05000d;
         public static final int edit=0x7f05000c;
         public static final int finish=0x7f050008;
@@ -98,6 +104,7 @@ public final class R {
         public static final int save=0x7f05000e;
         public static final int sign=0x7f050009;
         public static final int signup_title=0x7f05000a;
+        public static final int title=0x7f050011;
     }
     public static final class style {
         /**    

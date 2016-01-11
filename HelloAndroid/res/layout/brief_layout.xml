@@ -8,37 +8,25 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingTop="2dip"
 >
-	<RelativeLayout 
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	>
-<ListView 
- 	    android:id="@android:id/list"
- 	    android:layout_width="fill_parent"
- 	    android:layout_height="fill_parent"
- 	    android:layout_marginBottom="6dip"
-/>
+
  <LinearLayout 
      android:id="@+id/briefFront"
-android:layout_above="@android:id/list"
-android:layout_marginLeft="25dp"
-android:layout_marginRight="25dp"
 android:orientation="horizontal"
 android:layout_width="fill_parent"
 android:layout_height="wrap_content"
-android:layout_alignParentBottom="true"
 
 >	
 <Button android:text="@string/back"
  android:textSize="5pt"  
 android:id="@+id/btnBriefBack" 
 style="@style/ButtonText"
-android:layout_width="fill_parent"
 android:layout_height="wrap_content"
+android:layout_width="fill_parent"
 android:layout_weight="1"
-android:layout_marginRight="15dp"></Button>
+android:layout_marginRight="45dp"
+></Button>
 　　   
         <Button
             android:id="@+id/btnBriefAdd"
@@ -48,18 +36,15 @@ android:layout_marginRight="15dp"></Button>
             android:text="@string/add"
             android:textSize="5pt" 
             android:layout_weight="1"
-            android:layout_marginLeft="15dp">
+            android:layout_marginLeft="45dp"
+            android:layout_gravity="right">
 </Button>
 　　   </LinearLayout>
          <LinearLayout
 android:id="@+id/briefHideLayout"
-android:layout_above="@android:id/list"
-android:layout_marginLeft="25dp"
-android:layout_marginRight="25dp"
 android:orientation="horizontal"
 android:layout_width="fill_parent"
 android:layout_height="wrap_content"
-android:layout_alignParentBottom="true"
 android:visibility="gone"
 >	
 <Button android:text="@string/cancel"
@@ -69,7 +54,7 @@ style="@style/ButtonText"
 android:layout_width="fill_parent"
 android:layout_height="wrap_content"
 android:layout_weight="1"
-android:layout_marginRight="15dp"></Button>
+android:layout_marginRight="45dp"></Button>
 　　   
         <Button
             android:id="@+id/btnBriefDelete"
@@ -79,9 +64,15 @@ android:layout_marginRight="15dp"></Button>
             android:text="@string/delete"
             android:textSize="5pt" 
             android:layout_weight="1"
-            android:layout_marginLeft="15dp">
+            android:layout_marginLeft="45dp">
 </Button>
 　　   </LinearLayout>
-	</RelativeLayout>
+        
+ <ListView
+    android:id="@android:id/list"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_marginTop="6dip" 
+/>
 
  </LinearLayout>	
