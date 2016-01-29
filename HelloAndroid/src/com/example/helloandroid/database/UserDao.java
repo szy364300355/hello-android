@@ -1,5 +1,7 @@
 package com.example.helloandroid.database;
 
+import java.io.ByteArrayOutputStream;
+import java.sql.Blob;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -7,10 +9,14 @@ import java.util.List;
 import com.example.helloandroid.EditActivity;
 import com.example.helloandroid.EditActivity.Item;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.ThumbnailUtils;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -23,6 +29,7 @@ public class UserDao {
 	public static final String USERDATA_CONTENT="content";
 	public static final String USERDATA_DATE="date";
 	public static final String USERDATA_TITLE="title";
+	public static final String USERDATA_PICTURE="picture";
 	public UserDao(Context cxt){
 		this.context=cxt;
 		helper=new userDatabaseHelper(cxt);
@@ -84,6 +91,36 @@ public class UserDao {
 			close();
 		}
 	}
+
+	public void insertDataWithPicture(String id,String brief,String content,String title,Bitmap img){
+		try{
+			ByteArrayOutputStream os=new ByteArrayOutputStream();
+			img.compress(Bitmap.CompressFormat.PNG, 100, os);
+			
+			String cont="";
+			if(content!=null)
+				cont=content;
+			Date dt=new Date(); 
+			SimpleDateFormat matter=new SimpleDateFormat("yyyy/MM/dd");
+			String date=matter.format(dt);
+			String sql="insert into userdata (id,brief,content,title,picture,date) values(?,?,?,?,?,?)";
+			openToWrite();
+			db.execSQL(sql, new Object[]{id,brief,cont,title,os.toByteArray(),date});
+			Log.i("INFO","insertData : 	"+id+" : "+brief);
+		}catch(SQLException e){
+			Log.i("INFO","insertData error: 	"+id+" : "+brief);
+		}finally{
+			close();
+		}
+	}
+
+	/**
+	 * Add页面添加备注，且没有照片时调用该方法
+	 * @param id
+	 * @param brief
+	 * @param content
+	 * @param title
+	 */
 	public void insertData(String id,String brief,String content,String title){
 		try{
 			
@@ -98,7 +135,7 @@ public class UserDao {
 			db.execSQL(sql, new Object[]{id,brief,cont,title,date});
 			Log.i("INFO","insertData : 	"+id+" : "+brief);
 		}catch(SQLException e){
-			
+			Log.i("INFO","insertData error: 	"+id+" : "+brief);
 		}finally{
 			close();
 		}
@@ -142,7 +179,15 @@ public class UserDao {
 	}
 	public void saveData(String id,String rowid,EditActivity.Item item){
 		String sql="UPDATE userdata SET id =?, content = ?, brief =?,title=?,date=? WHERE rowid=?;";
+		String sql2="UPDATE userdata SET id =?, content = ?, brief =?,title=?,picture=?,date=? WHERE rowid=?;";
 		try{
+			byte[] inputPicture=null;
+			if(item.picture!=null){
+				ByteArrayOutputStream os=new ByteArrayOutputStream();
+				item.picture.compress(Bitmap.CompressFormat.PNG, 100, os);
+				inputPicture=os.toByteArray();
+			}
+			
 			openToWrite();
 			
 			String brief;
@@ -151,7 +196,11 @@ public class UserDao {
 			}else{
 				brief=item.content;
 			}
-			db.execSQL(sql, new Object[]{id,item.content,brief,item.title,item.date,rowid});
+//			if(item.picture==null){
+//				db.execSQL(sql, new Object[]{id,item.content,brief,item.title,null,item.date,rowid});
+//			}else{
+				db.execSQL(sql2, new Object[]{id,item.content,brief,item.title,inputPicture,item.date,rowid});
+//			}
 		}catch(SQLException e){
 		}finally{
 			close();
@@ -225,6 +274,50 @@ public class UserDao {
 			openToWrite();
 			db.execSQL(sql.toString());
 		}catch(SQLException e){
+		}finally{
+			close();
+		}
+	}
+	/**
+	 * 获取数据库中的图片
+	 */
+	public Bitmap getPicture(String rowid){
+		try{
+			Bitmap picture=null;
+			openToRead();
+			String sql="select *,rowid from userdata where rowid=?";
+			Cursor c=db.rawQuery(sql, new String[]{rowid});
+			if(c.moveToFirst()){
+				byte[] in=
+				c.getBlob(c.getColumnIndex(UserDao.USERDATA_PICTURE));
+				if(in!=null&&in.length!=0)
+				picture=BitmapFactory.decodeByteArray(in, 0, in.length);
+			}
+			return picture;
+		}catch(SQLException e){
+			return null;
+		}finally{
+			close();
+		}
+	}
+	/**
+	 * 获取数据库中的缩略图片
+	 */
+	public Bitmap getPictureSmall(String rowid){
+		try{
+			Bitmap picture=null;
+			openToRead();
+			String sql="select *,rowid from user where rowid=?";
+			Cursor c=db.rawQuery(sql, new String[]{rowid});
+			if(c.moveToFirst()){
+				byte[] in=
+				c.getBlob(c.getColumnIndex(UserDao.USERDATA_PICTURE));
+				if(in!=null&&in.length!=0)
+				picture=ThumbnailUtils.extractThumbnail(BitmapFactory.decodeByteArray(in, 0, in.length),5,5);
+			}
+			return picture;
+		}catch(SQLException e){
+			return null;
 		}finally{
 			close();
 		}

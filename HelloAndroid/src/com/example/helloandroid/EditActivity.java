@@ -5,6 +5,7 @@ import java.util.Date;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -103,6 +104,7 @@ public class EditActivity extends Activity{
 				setFrontBotton(true);
 			}
 			if(v==btnBack2){
+				editTitle.setText(content.title);
 				editText.setText(content.content);	
 				editText.setEnabled(false);
 				editTitle.setEnabled(false);
@@ -115,5 +117,6 @@ public class EditActivity extends Activity{
 		public String title;
 		public String content;
 		public String date;
+		public Bitmap picture;
 	}
 }

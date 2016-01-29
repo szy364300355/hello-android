@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+    android:background="#990000"
+    android:theme="@android:style/Theme"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="2dip" >
+    <RelativeLayout 
+        android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+>
+         <LinearLayout 
+     android:id="@+id/Front"
+android:orientation="horizontal"
+android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+android:paddingBottom="2dip"
+>	
+<Button android:text="@string/back"
+ android:textSize="5pt"  
+android:id="@+id/btnAddBack" 
+style="@style/ButtonText"
+android:layout_height="wrap_content"
+android:layout_width="fill_parent"
+android:layout_weight="1"
+android:layout_marginRight="45dp"
+></Button>
+　　   
+        <Button
+            android:id="@+id/btnAddSave"
+            style="@style/ButtonText"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:text="@string/add"
+            android:textSize="5pt" 
+            android:layout_weight="1"
+            android:layout_marginLeft="45dp"
+            android:layout_gravity="right">
+</Button>
+　　   </LinearLayout>
+            <LinearLayout 
+     android:id="@+id/BackActionBar"
+     android:layout_alignParentTop="true"
+android:orientation="horizontal"
+android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+android:paddingBottom="2dip"
+android:visibility="invisible"
+>	
+<Button android:text="@string/back"
+ android:textSize="5pt"  
+android:id="@+id/btnEditBack" 
+style="@style/ButtonText"
+android:layout_height="wrap_content"
+android:layout_width="fill_parent"
+android:layout_weight="1"
+android:layout_marginRight="45dp"
+></Button>
+　　   
+        <Button
+            android:id="@+id/btnEditSave"
+            style="@style/ButtonText"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:text="@string/save"
+            android:textSize="5pt" 
+            android:layout_weight="1"
+            android:layout_marginLeft="45dp"
+            android:layout_gravity="right">
+</Button>
+　　   </LinearLayout>
+    </RelativeLayout>
+   
+    <LinearLayout 
+android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+android:paddingBottom="2dip"
+android:layout_marginRight="20dip"
+android:layout_marginLeft="20dip"
+>
+
+<EditText 
+    android:id="@+id/addTitle"
+    android:singleLine="true"
+    android:maxLength="20"
+    android:inputType="text"
+    android:textSize="20sp"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="6dip" 
+    android:gravity="center"
+    android:hint="@string/title"
+/>
+</LinearLayout>
+    
+      <RelativeLayout android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:background="#990000"
+      >
+          <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        ></android.support.v4.view.ViewPager>
+          
+          <RadioGroup android:id="@+id/radioGroup"
+              android:background="#990000"
+              android:layout_width="fill_parent"
+              android:layout_height="49dp"
+              android:orientation="horizontal"
+              android:layout_alignParentBottom="true"
+              >
+              
+              <RadioButton android:id="@+id/btn1"
+                  android:text="@string/details"
+                  android:layout_width="fill_parent"
+                  android:layout_weight="1"></RadioButton>   
+              <RadioButton android:id="@+id/btn2"
+                  android:text="@string/picture"
+                  android:layout_width="fill_parent"
+                  android:layout_weight="1"
+                  android:layout_marginLeft="30dp"></RadioButton>         </RadioGroup>      </RelativeLayout> 
+</LinearLayout>

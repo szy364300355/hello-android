@@ -102,11 +102,13 @@ public class BriefActivity extends Activity{
 				 //跳转查看/编辑页面
 				 Bundle bundle=new Bundle(); 
 				 Adapter adapter=BriefActivity.this.adapter;
-				 bundle.putString("rowid", adapter.getRowid(arg2));				 
+				 String rowid=adapter.getRowid(arg2);
+				 bundle.putString("rowid",rowid);				 
 				 bundle.putString("id",getIntent().getExtras().getString("id"));
+				 bundle.putBoolean("hasPicture", adapter.hasPicture(arg2));
 				 Intent intent = new Intent(); 
 				 intent.putExtras(bundle);
-				 intent.setClass(BriefActivity.this, EditActivity.class);
+				 intent.setClass(BriefActivity.this, EditActivity2.class);
 				 
 				BriefActivity.this.startActivity(intent);
 				
@@ -145,7 +147,7 @@ public class BriefActivity extends Activity{
 				 Bundle bundle=new Bundle(); 
 				 bundle.putString("id", getIntent().getExtras().getString("id"));
 				 Intent intent = new Intent(); 
-			     intent.setClass(BriefActivity.this, AddActivity.class);
+			     intent.setClass(BriefActivity.this, AddActivity2.class);
 			     intent.putExtras(bundle);
 			     BriefActivity.this.startActivity(intent);
 			}
@@ -212,6 +214,14 @@ public class BriefActivity extends Activity{
 			ischeck= new HashMap<Integer, Boolean>();
 			 init();
 			
+		}
+		public boolean hasPicture(int position) {
+			// TODO Auto-generated method stub
+			c.moveToPosition(position);
+			byte[] re=c.getBlob(cursor.getColumnIndex(UserDao.USERDATA_PICTURE));
+			if(re==null)
+			return false;
+			return true;
 		}
 		public void init(){
 			

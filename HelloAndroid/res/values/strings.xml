@@ -20,4 +20,7 @@
     <string name="add">ADD</string>
     <string name="title">INPUT YOUR TITLE</string>
     <string name="content">CONTENT HERE</string>
+    <string name="addpicture">长按添加一张图片吧！</string>
+    <string name="details">DETAILS</string>
+        <string name="picture">PICTURE</string>
 </resources>

@@ -44,7 +44,7 @@ public class HelloActivity extends Activity {
         
 //初始化数据库 清空里面所有数据
         userDao=new UserDao(getBaseContext());
-//        userDao.createAll();
+        userDao.createAll();
         init();
         for(int i=0;i<16;i++)
         { 
