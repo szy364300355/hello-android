@@ -4,24 +4,36 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
 >
-<RelativeLayout 
-    android:layout_weight="1"
+
+<LinearLayout android:layout_height="fill_parent"
+    android:orientation="horizontal"
     android:layout_width="0dp"
+    android:layout_weight="1"
+    android:paddingBottom="5dp"    
+    >
+    <ImageView   android:id="@+id/itemImage"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleType="fitXY"
+			android:layout_gravity="left"
+			android:paddingTop="5dp"
+            />
+    <RelativeLayout 
+    android:layout_width="wrap_content"
+    android:id="@+id/itemTitleBriefLayout"
     android:layout_height="fill_parent"
+    android:paddingLeft="10dp"
+    android:layout_gravity="left"
 >
 
-       
         <TextView
-        android:layout_gravity="left"
         android:gravity="left"
         android:id="@+id/itemTitle"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textSize="18sp"
-         android:singleLine="true"
+        android:singleLine="true"
         ></TextView>
-
-
         <TextView
         android:layout_below="@id/itemTitle"
         android:id="@+id/itemBrief"
@@ -29,7 +41,10 @@
         android:layout_height="wrap_content"
         android:singleLine="true"
         ></TextView>
+        
     </RelativeLayout>
+</LinearLayout>
+
     
             <TextView
         android:id="@+id/itemDate"

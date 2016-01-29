@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,6 +27,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -262,7 +264,8 @@ public class BriefActivity extends Activity{
 				 convertView = inflater.inflate(R.layout.item,
 						    null);
 				 holder = new ViewHolder();
-                 /*得到各个控件的对象*/                    
+                 /*得到各个控件的对象*/ 
+				 holder.imgv=(ImageView)convertView.findViewById(R.id.itemImage);
 				 holder.title= (TextView) convertView.findViewById(R.id.itemTitle);
 				 holder.brief = (TextView) convertView.findViewById(R.id.itemBrief);
                  holder.date = (TextView) convertView.findViewById(R.id.itemDate);
@@ -285,6 +288,7 @@ public class BriefActivity extends Activity{
 					}
                 	 
                  });
+                 
                  convertView.setTag(holder);//绑定ViewHolder对象    
 
 			} else{
@@ -301,14 +305,24 @@ public class BriefActivity extends Activity{
 				
 			}
             if(cursor.moveToPosition(position)){
+				String rowid=cursor.getString(cursor.getColumnIndex("rowid"));
+				Bitmap tmp=HelloActivity.userDao.getPicture(rowid);;
 				holder.title.setText(cursor.getString(cursor.getColumnIndex(UserDao.USERDATA_TITLE)));
 				holder.brief.setText(cursor.getString(cursor.getColumnIndex(UserDao.USERDATA_BREIF)));
 				holder.date.setText(cursor.getString(cursor.getColumnIndex(UserDao.USERDATA_DATE)));
+				if(tmp==null){
+					holder.imgv.setImageBitmap(null);
+					holder.imgv.setVisibility(View.GONE);
+				}else{
+					holder.imgv.setImageBitmap(tmp);
+					holder.imgv.setVisibility(View.VISIBLE);
+				}
 			}
 			 return convertView;
 		}
 		/**存放控件*/ 
 		public final class ViewHolder{
+			public ImageView imgv;
 			public TextView title;
 		    public TextView brief;
 		    public TextView date;

@@ -1,5 +1,6 @@
 package com.example.helloandroid;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
@@ -14,15 +15,18 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -94,7 +98,7 @@ private void init(){
 	mViews.add(getLayoutInflater().inflate(R.layout.picture_layout, null));
 	textView=(TextView)mViews.get(1).findViewById(R.id.pictureLayoutTextView);
 		imgv=(ImageView) mViews.get(1).findViewById(R.id.picture);
-		imgv.setVisibility(View.INVISIBLE);
+		imgv.setVisibility(View.GONE);
 		
 		
 		mViews.get(1).setOnLongClickListener(new OnLongClickListener(){
@@ -124,20 +128,22 @@ private void init(){
 						}
 						else if(which==1){
 							//TODO 调用相册或是从相册取数据
-							InputStream is=null;
-							try {
-								is = getResources().getAssets().open("test.png");
-							} catch (IOException e) {
-								e.printStackTrace();
-							}
-							AddActivity2.this.tmpPicture=BitmapFactory.decodeStream(is);
-							showPicture(true);
-							
-							try {
-								is.close();
-							} catch (IOException e) {
-								e.printStackTrace();
-							}
+							Intent intent= new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+							startActivityForResult(intent,2);
+//							InputStream is=null;
+//							try {
+//								is = getResources().getAssets().open("test.png");
+//							} catch (IOException e) {
+//								e.printStackTrace();
+//							}
+//							AddActivity2.this.tmpPicture=BitmapFactory.decodeStream(is);
+//							showPicture(true);
+//							
+//							try {
+//								is.close();
+//							} catch (IOException e) {
+//								e.printStackTrace();
+//							}
 						}else if(which==2){
 							showPicture(false);
 						}
@@ -201,8 +207,6 @@ private class MyPagerOnPageChangeListener implements OnPageChangeListener{
 		 btn1.performClick();
 		}else if(arg0==1){
 		btn2.performClick();
-//	     btn1.setChecked(false);
-//	     btn2.setChecked(true);
 		}
 	}
 	
@@ -220,15 +224,36 @@ public void onCheckedChanged(RadioGroup group, int checkedId) {
 protected void onActivityResult(int requestCode,int resultCode,Intent data){
 	super.onActivityResult(requestCode, resultCode, data);
 	if(resultCode==Activity.RESULT_OK){
-		Bundle bundle=data.getExtras();
-		tmpPicture=(Bitmap) bundle.get("data");
-		tmpPicture=Utils.initPicture(tmpPicture,AddActivity2.this);
-		showPicture(true);
+		if(requestCode==1){
+			Bundle bundle=data.getExtras();
+			tmpPicture=(Bitmap) bundle.get("data");
+			tmpPicture=Utils.initPicture(tmpPicture,AddActivity2.this);
+			showPicture(true);
+		}
+		if(requestCode==2&&null!=data){
+			//TODO 相册返回值
+			Uri selectedImage=data.getData();
+			String[] filePathColumns={MediaStore.Images.Media.DATA};
+			Cursor c=this.getContentResolver().query(selectedImage, filePathColumns, null, null, null);
+			c.moveToFirst();
+			int columnIndex=c.getColumnIndex(filePathColumns[0]);
+			String picturePath=c.getString(columnIndex);
+			Log.d("debug",picturePath);
+			try {
+				tmpPicture=MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
+				tmpPicture=Utils.initPicture(tmpPicture,AddActivity2.this);
+				showPicture(true);
+			} catch (FileNotFoundException e) {
+				Log.e("error","Picture not found");
+			} catch (IOException e) {
+				Log.e("error","Picture not found");
+			}
+		}
 	}
 }
 private void showPicture(boolean isShow){
 	if(isShow){
-		textView.setVisibility(View.INVISIBLE);
+		textView.setVisibility(View.GONE);
 		imgv.setImageBitmap(tmpPicture);
 		imgv.setVisibility(View.VISIBLE);
 		hasPicture=true;
@@ -236,7 +261,7 @@ private void showPicture(boolean isShow){
 		AddActivity2.this.tmpPicture=null;
 		textView.setVisibility(View.VISIBLE);
 		imgv.setImageBitmap(null);
-		imgv.setVisibility(View.INVISIBLE);
+		imgv.setVisibility(View.GONE);
 		hasPicture=false;
 	}
 }

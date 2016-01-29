@@ -1,22 +1,29 @@
 package com.example.helloandroid;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
+import com.example.helloandroid.utils.Utils;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -155,24 +162,28 @@ private void setEditable(boolean editable){
 						}
 						else if(which==1){
 							//TODO 调用相册或是从相册取数据
-							InputStream is=null;
-							try {
-								is = getResources().getAssets().open("test.png");
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-							Bitmap btm=BitmapFactory.decodeStream(is);
-							imgv.setImageBitmap(btm);
-							EditActivity2.this.showPicture(true);
 							
+//							InputStream is=null;
+//							try {
+//								is = getResources().getAssets().open("test.png");
+//							} catch (IOException e) {
+//								// TODO Auto-generated catch block
+//								e.printStackTrace();
+//							}
+//							Bitmap btm=BitmapFactory.decodeStream(is);
+//							imgv.setImageBitmap(btm);
+//							EditActivity2.this.showPicture(true);
+
+//							try {
+//								is.close();
+//							} catch (IOException e) {
+//								// TODO Auto-generated catch block
+//								e.printStackTrace();
+//							}
 							
-							try {
-								is.close();
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
+							Intent intent= new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+							startActivityForResult(intent,2);
+							
 						}else if(which==2){
 							imgv.setImageBitmap(null);
 							showPicture(false);
@@ -215,9 +226,9 @@ private void showPicture(boolean isShow){
 	if(isShow)
 	{
 		imgv.setVisibility(View.VISIBLE);
-		textView.setVisibility(View.INVISIBLE);
+		textView.setVisibility(View.GONE);
 	}else{
-		imgv.setVisibility(View.INVISIBLE);
+		imgv.setVisibility(View.GONE);
 		textView.setVisibility(View.VISIBLE);
 	}
 }
@@ -331,10 +342,32 @@ private class MyListener  implements OnClickListener{
 protected void onActivityResult(int requestCode,int resultCode,Intent data){
 	super.onActivityResult(requestCode, resultCode, data);
 	if(resultCode==Activity.RESULT_OK){
-		Bundle bundle=data.getExtras();
-		Bitmap tmpPicture = (Bitmap) bundle.get("data");imgv.setImageBitmap(null);
-		imgv.setImageBitmap(tmpPicture);
-		showPicture(true);
+		if(requestCode==1){
+			Bundle bundle=data.getExtras();
+			Bitmap tmpPicture = (Bitmap) bundle.get("data");imgv.setImageBitmap(null);
+			imgv.setImageBitmap(tmpPicture);
+			showPicture(true);
+		}
+		if(requestCode==2&&null!=data){
+			//TODO 相册返回值
+			Uri selectedImage=data.getData();
+			String[] filePathColumns={MediaStore.Images.Media.DATA};
+			Cursor c=this.getContentResolver().query(selectedImage, filePathColumns, null, null, null);
+			c.moveToFirst();
+			int columnIndex=c.getColumnIndex(filePathColumns[0]);
+			String picturePath=c.getString(columnIndex);
+			Log.d("debug",picturePath);
+			try {
+				Bitmap tmpPicture=MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
+				tmpPicture=Utils.initPicture(tmpPicture,EditActivity2.this);
+				imgv.setImageBitmap(tmpPicture);
+				showPicture(true);
+			} catch (FileNotFoundException e) {
+				Log.e("error","Picture not found");
+			} catch (IOException e) {
+				Log.e("error","Picture not found");
+			}
+		}
 	}
 }
 }
