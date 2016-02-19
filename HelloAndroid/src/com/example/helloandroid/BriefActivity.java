@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import com.example.helloandroid.database.UserDao;
+import com.example.helloandroid.utils.Utils;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListActivity;
@@ -306,7 +308,7 @@ public class BriefActivity extends Activity{
 			}
             if(cursor.moveToPosition(position)){
 				String rowid=cursor.getString(cursor.getColumnIndex("rowid"));
-				Bitmap tmp=HelloActivity.userDao.getPicture(rowid);;
+				Bitmap tmp=HelloActivity.userDao.getPicture(rowid);
 				holder.title.setText(cursor.getString(cursor.getColumnIndex(UserDao.USERDATA_TITLE)));
 				holder.brief.setText(cursor.getString(cursor.getColumnIndex(UserDao.USERDATA_BREIF)));
 				holder.date.setText(cursor.getString(cursor.getColumnIndex(UserDao.USERDATA_DATE)));
@@ -314,7 +316,7 @@ public class BriefActivity extends Activity{
 					holder.imgv.setImageBitmap(null);
 					holder.imgv.setVisibility(View.GONE);
 				}else{
-					holder.imgv.setImageBitmap(tmp);
+					holder.imgv.setImageBitmap(Utils.getSquareBitmap(tmp));
 					holder.imgv.setVisibility(View.VISIBLE);
 				}
 			}
