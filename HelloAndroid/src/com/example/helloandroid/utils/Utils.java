@@ -50,4 +50,17 @@ public class Utils {
 		    picture=Bitmap.createBitmap(picture, 0, 0, pictureWidth, pictureHeight, matrix, true);
 		    return picture;
 	}
+	/**
+	 * 截取图片正方形
+	 */
+	public static Bitmap getSquareBitmap(Bitmap bitmap){
+		int widthOrg=bitmap.getWidth();
+		int heightOrg=bitmap.getHeight();
+		
+		int square=Math.min(widthOrg, heightOrg);
+		int xTopLeft=(widthOrg-square)/2;
+		int yTopLeft=(heightOrg-square)/2;
+		Bitmap result=Bitmap.createBitmap(bitmap,xTopLeft ,yTopLeft ,square ,square );
+		return result;
+	}
 }

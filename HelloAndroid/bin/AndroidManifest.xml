@@ -50,6 +50,10 @@
             android:name=".EditActivity2"
             android:label="@string/app_name" >
         </activity>
+                 <activity
+            android:name=".FrameActivity"
+            android:label="@string/app_name" >
+        </activity>
     </application>
 
 </manifest>

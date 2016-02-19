@@ -122,15 +122,22 @@ private void init(){
 
 						if(which==0)
 						{
-							//TODO 调用相机
 							Intent intent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 							startActivityForResult(intent,1);
 						}
 						else if(which==1){
 							//TODO 调用相册或是从相册取数据
+							
+							/**调用相册
 							Intent intent= new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 							startActivityForResult(intent,2);
 //							InputStream is=null;
+							 * */
+							
+							/**调用相册数据*/
+							 Intent intent = new Intent(); 
+						     intent.setClass(AddActivity2.this, FrameActivity.class);
+						     AddActivity2.this.startActivityForResult(intent,3);
 //							try {
 //								is = getResources().getAssets().open("test.png");
 //							} catch (IOException e) {
@@ -248,6 +255,13 @@ protected void onActivityResult(int requestCode,int resultCode,Intent data){
 			} catch (IOException e) {
 				Log.e("error","Picture not found");
 			}
+		}
+		if(requestCode==3&&null!=data){
+			Bundle bundle=data.getExtras();
+			
+			tmpPicture=BitmapFactory.decodeFile((String) bundle.get("data"));
+			tmpPicture=Utils.initPicture(tmpPicture,AddActivity2.this);
+			showPicture(true);
 		}
 	}
 }
