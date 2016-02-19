@@ -78,6 +78,8 @@ public class FrameActivity extends Activity{
 				finish();
 			}
 			if(v==btnSelect){
+				if(fragment1.selectPosition==-1)
+					return;
 				Intent data=new Intent();
 				data.putExtra("data",fragment1.adapter.getImageString(fragment1.selectPosition));
 				FrameActivity.this.setResult(RESULT_OK, data);
@@ -87,11 +89,14 @@ public class FrameActivity extends Activity{
 			if(v==btnBack2){
 				//回复页面
 				showFrag1(true);
+				fragment1.clickItem=-1;
 				findViewById(R.id.Front).setVisibility(View.VISIBLE);
 				findViewById(R.id.HideLayout).setVisibility(View.GONE);
 				
 			}
 			if(v==btnOk){
+				if(fragment1.clickItem==-1)
+					return;
 				Intent data=new Intent();
 				data.putExtra("data",fragment1.adapter.getImageString(fragment1.clickItem));
 				FrameActivity.this.setResult(RESULT_OK, data);
@@ -103,11 +108,14 @@ public class FrameActivity extends Activity{
 	public void showFrag1(boolean showFrag1){
 		if(showFrag1){
 			if(!firstInit){
+				findViewById(R.id.HideLayout).setVisibility(View.GONE);
+			findViewById(R.id.Front).setVisibility(View.VISIBLE);
 				transation=fragmentManager.beginTransaction();
 				transation.replace(R.id.frame_fragment, (Fragment)fragment1);
 				transation.commit();
 			}else{
 				this.firstInit=false;
+
 			}
 		}else{
 			//show Frag2

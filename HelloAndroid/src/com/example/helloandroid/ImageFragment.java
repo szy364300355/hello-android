@@ -52,6 +52,7 @@ public class ImageFragment  extends Fragment{
 
 			@Override
 			public void onClick(View v) {
+				parent.fragment1.clickItem=-1;
 				parent.showFrag1(true);
 				imageView.setImageBitmap(null);
 			}

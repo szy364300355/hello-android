@@ -161,6 +161,7 @@ public int clickItem=-1;
 					if(selectedItem==v){
 						selectedItem=null;
 						selectPosition=-1;
+						
 					}
 					if(selectedItem!=null&&selectedItem!=v){
 						selectedItem.setChecked(false);
@@ -178,7 +179,7 @@ public int clickItem=-1;
 
 				@Override
 				public void onClick(View v) {
-					SumFragment.this.clickItem=position;
+						SumFragment.this.clickItem=position;
 					SumFragment.this.parent.showFrag1(false);
 				}
 				
