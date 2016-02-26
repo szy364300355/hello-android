@@ -2,7 +2,9 @@ package com.example.helloandroid.utils;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.media.ThumbnailUtils;
 import android.util.DisplayMetrics;
 
 public class Utils {
@@ -46,9 +48,10 @@ public class Utils {
 			float scale=Math.min(scaleWidth, scaleHeight);
 			Matrix matrix=new Matrix();
 			matrix.postScale(scale, scale);
-			
-		    picture=Bitmap.createBitmap(picture, 0, 0, pictureWidth, pictureHeight, matrix, true);
-		    return picture;
+			Bitmap newpicture;
+			newpicture=Bitmap.createBitmap(picture, 0, 0, pictureWidth, pictureHeight, matrix, true);
+			picture.recycle();
+		    return newpicture;
 	}
 	/**
 	 * 截取图片正方形
@@ -61,6 +64,39 @@ public class Utils {
 		int xTopLeft=(widthOrg-square)/2;
 		int yTopLeft=(heightOrg-square)/2;
 		Bitmap result=Bitmap.createBitmap(bitmap,xTopLeft ,yTopLeft ,square ,square );
+		bitmap.recycle();
 		return result;
+	}
+	
+	public static Bitmap getImage(String path,int width,int height){
+		
+		BitmapFactory.Options options=new 	BitmapFactory.Options();
+		   options.inJustDecodeBounds=true;
+		   Bitmap imb=BitmapFactory.decodeFile(path,options);
+			
+			options.inJustDecodeBounds=false;
+			
+			int h=options.outHeight;
+			int w=options.outWidth;
+			
+			int beWidth=w/width;
+			int beHeight=h/height;
+			
+			int be=1;
+			
+			if(beWidth<beHeight){
+				be=beWidth;
+			}else{
+				be=beHeight;
+			}
+		   if(be<=0){
+			   be=1;
+		   }
+		   options.inSampleSize=be;
+		   
+		   imb=BitmapFactory.decodeFile(path,options);
+//		   imb=ThumbnailUtils.extractThumbnail(imb, width, height,ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
+				   
+			return imb;
 	}
 }

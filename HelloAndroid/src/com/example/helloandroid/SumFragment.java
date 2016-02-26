@@ -20,6 +20,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -29,6 +30,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
@@ -50,8 +52,11 @@ public int selectPosition=-1;
 public ImageAdapter adapter;
 private FrameActivity parent;
 public int clickItem=-1;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState){
+		
+		
 		Log.i("Fragment1", "-------------------create view!!!!!-------------------");
 		super.onCreateView(inflater, container, savedInstanceState);
 		if(container==null)
@@ -84,7 +89,9 @@ public int clickItem=-1;
 		}
 	}
 	public Bitmap getSelectImage(){
-		return adapter.getImage(clickItem);
+		WindowManager wm=parent.getWindowManager();
+		
+		return adapter.getImage(clickItem,wm.getDefaultDisplay().getWidth(),wm.getDefaultDisplay().getHeight());
 	}
 	//构建适配器
 	public class ImageAdapter extends BaseAdapter{
@@ -114,12 +121,10 @@ public int clickItem=-1;
 			   String selectedImage=cursor.getString(column_index);
 			   return selectedImage;
 		}
-		public Bitmap getImage(int position){
+		public Bitmap getImage(int position,int width,int height){
 			cursor.moveToPosition(position);
 		   String selectedImage=cursor.getString(column_index);
-		   
-			Bitmap imb=BitmapFactory.decodeFile(selectedImage);
-			return imb;
+		   return Utils.getImage(selectedImage, width, height);
 		}
 //		
 		@Override
@@ -151,9 +156,17 @@ public int clickItem=-1;
 			}else{
                 holder = (ViewHolder)convertView.getTag();//取出ViewHolder对象
                 }
-			holder.imgv=new BitmapDrawable(Utils.resizePicture(Utils.getSquareBitmap(getImage(position)), 100, 100));
+			holder.imgv=new BitmapDrawable(Utils.getSquareBitmap(getImage(position,100,100)));
 			convertView.setBackground(holder.imgv);
 			holder.bt= (CheckBox) convertView.findViewById(R.id.itemCheck);
+			
+			if(position!=selectPosition&&holder.bt.isChecked()){
+				holder.bt.setChecked(false);
+			}
+			if(position==selectPosition&&!holder.bt.isChecked()){
+				holder.bt.setChecked(true);
+			}
+			
 			holder.bt.setOnClickListener(new OnClickListener(){
 
 				@Override
