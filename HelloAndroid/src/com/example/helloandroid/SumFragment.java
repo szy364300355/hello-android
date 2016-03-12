@@ -3,12 +3,15 @@ package com.example.helloandroid;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.example.helloandroid.BriefActivity.Adapter.ViewHolder;
+import com.example.helloandroid.memeryCache.AsyncImageLoader;
+import com.example.helloandroid.memeryCache.AsyncLoaderCallBackI;
 import com.example.helloandroid.utils.Utils;
 
 import android.annotation.SuppressLint;
@@ -24,6 +27,7 @@ import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.provider.MediaStore.Images.Media;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,7 +35,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -42,8 +48,14 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 
+/**
+ * 相册图片选择页
+ * @author s
+ *
+ */
+public class SumFragment extends Fragment  implements OnScrollListener {
+	//底层以数组形式实现，可以在某个点实现快速插入数据
 
-public class SumFragment extends Fragment{
 private Button btn;
 private View frame=null;
 private GridView gridview;
@@ -52,6 +64,7 @@ public int selectPosition=-1;
 public ImageAdapter adapter;
 private FrameActivity parent;
 public int clickItem=-1;
+public boolean isBusy=false;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState){
@@ -59,6 +72,8 @@ public int clickItem=-1;
 		
 		Log.i("Fragment1", "-------------------create view!!!!!-------------------");
 		super.onCreateView(inflater, container, savedInstanceState);
+		
+			
 		if(container==null)
 			return null;
 		this.frame=inflater.inflate(R.layout.frame_layout, container, false);		
@@ -95,23 +110,34 @@ public int clickItem=-1;
 	}
 	//构建适配器
 	public class ImageAdapter extends BaseAdapter{
+		private AsyncImageLoader imageLoader;
 		private Context context;
 		private final String IMAGE_TYPE="image/*";
 		private Cursor cursor;
 		private LayoutInflater inflater=null;
-		private String[] filePathColumns={MediaStore.Images.Media.DATA};
+		private String[] filePathColumns={MediaStore.Images.Media.DATA,};
 		private int column_index;
 		private Map<Integer,CheckBox> checkBoxList;
 
 		public ImageAdapter(Context c){
 			this.context=c;
+			imageLoader=new AsyncImageLoader(context);
 			checkBoxList=new HashMap<Integer,CheckBox>();
 			inflater=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			cursor=SumFragment.this.getActivity().getContentResolver().
 			query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, filePathColumns, null, null, null);
 			column_index=cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
 		}
-
+		/**
+		 * 获取图片路径
+		 * @param position
+		 * @return
+		 */
+		public String getImagePath(int position){
+			cursor.moveToPosition(position);
+			   String path=cursor.getString(column_index);
+			   return path;
+		}
 		public String getImageString(int position){
 			if(cursor.isClosed()){
 				cursor=parent.getContentResolver().
@@ -148,16 +174,36 @@ public int clickItem=-1;
 				 convertView = inflater.inflate(R.layout.imageitem,
 						    null);
 				 holder = new ViewHolder();
-				 holder.imgv=convertView.getBackground();
+				 holder.imgv=(ImageView) convertView.findViewById(R.id.image);
+				 
 				 holder.bt=(CheckBox) convertView.findViewById(R.id.itemCheck);
 				 checkBoxList.put(position,  holder.bt);
-				 convertView.setTag(holder);//绑定ViewHolder对象    
+				 convertView.setTag(holder);//绑定ViewHolder对象 
 				 
 			}else{
                 holder = (ViewHolder)convertView.getTag();//取出ViewHolder对象
                 }
-			holder.imgv=new BitmapDrawable(Utils.getSquareBitmap(getImage(position,100,100)));
-			convertView.setBackground(holder.imgv);
+			String path=getImagePath(position);
+			holder.imgv.setTag(path);
+			if (!isBusy) {
+				holder.imgv.setImageResource(R.drawable.load);
+				Drawable drawable =imageLoader.displayImage(path, Utils.MINIMUM_SIZE_SQUARE, new AsyncLoaderCallBackI<Drawable,String>(){
+				
+					@Override
+					public void changUI(Drawable resouce, String tag) {
+						ImageView image=(ImageView) SumFragment.this.gridview.findViewWithTag(tag);
+						if(image!=null)
+							image.setImageDrawable(resouce);
+						
+					}
+					
+				});
+				if(drawable!=null)//从缓存中直接获得了立马返回
+					holder.imgv.setImageDrawable(drawable);
+			}else{
+				holder.imgv.setImageResource(R.drawable.load);
+			}
+			
 			holder.bt= (CheckBox) convertView.findViewById(R.id.itemCheck);
 			
 			if(position!=selectPosition&&holder.bt.isChecked()){
@@ -202,8 +248,33 @@ public int clickItem=-1;
 		
 		/**存放控件*/ 
 		public final class ViewHolder{
-			public Drawable imgv;
+			public ImageView imgv;
 		    public CheckBox   bt;
+		}
+	}
+	public void setIsBusy(boolean isBusy) {
+		this.isBusy = isBusy;
+	}
+	@Override
+	public void onScroll(AbsListView view, int firstVisibleItem,
+			int visibleItemCount, int totalItemCount) {
+		
+	}
+	@Override
+	public void onScrollStateChanged(AbsListView view, int scrollState) {
+		switch (scrollState) {
+		case OnScrollListener.SCROLL_STATE_FLING:
+			this.setIsBusy(true);
+			break;
+		case OnScrollListener.SCROLL_STATE_IDLE:
+			this.setIsBusy(false);
+			this.adapter.notifyDataSetChanged();
+			break;
+		case OnScrollListener.SCROLL_STATE_TOUCH_SCROLL:
+			this.setIsBusy(false);
+			break;
+		default:
+			break;
 		}
 	}
 }

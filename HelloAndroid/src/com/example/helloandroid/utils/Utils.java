@@ -8,6 +8,27 @@ import android.media.ThumbnailUtils;
 import android.util.DisplayMetrics;
 
 public class Utils {
+	public static final int ORIGINAL_SIZE=1;
+	public static final int MINIMUM_SIZE_SQUARE=0;
+	public static  int MAX_WIDTH;
+	public static  int MAX_HEIGHT;
+	public static final int MINI_SIZE=100;
+	
+	/**
+	 * 根据设定需要获取图片种类 <p>ORIGINAL_SIZE<p> MINIMUM_SIZE_SQUARE
+	 * @param path
+	 * @param kind
+	 * @return
+	 */
+	public static Bitmap getImage(String path,int kind){
+		switch (kind){
+		case ORIGINAL_SIZE:
+			return getImage(path,MAX_WIDTH,MAX_HEIGHT);
+		case MINIMUM_SIZE_SQUARE:
+			return getSquareBitmap(getImage(path,MINI_SIZE,MINI_SIZE));
+		}
+		return null;
+	}
 	/**
 	 * 调整图片适应屏幕大小显示
 	 * @param picture
@@ -68,6 +89,13 @@ public class Utils {
 		return result;
 	}
 	
+	/**
+	 * 根据路径从相册中获取图片
+	 * @param path
+	 * @param width
+	 * @param height
+	 * @return
+	 */
 	public static Bitmap getImage(String path,int width,int height){
 		
 		BitmapFactory.Options options=new 	BitmapFactory.Options();
